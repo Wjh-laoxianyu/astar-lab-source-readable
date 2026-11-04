@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>寻路小队 · A* 互动实验室</title>
+        <meta name="description" content="和阿米娅一起，用地图、代码与互动练习理解 A* 寻路算法。">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="walkthrough.css">
+    </head>
+    <body>
+        <!-- 页首与导航 -->
+        <header>
+            <a class="brand" href="#">✳ <span>寻路小队<small>PATHFINDING CLUB</small></span></a>
+            <nav>
+                <a href="#learn">先做迷你例题</a>
+                <a href="#lab">互动实验室</a>
+            </nav>
+            <span class="edition">学习任务 / 001</span>
+        </header>
+        <main>
+            <section class="hero">
+                <div>
+                    <div class="eyebrow">RHODES ISLAND · ALGORITHM FIELD NOTES</div>
+                    <h1>下一步，<em>往哪里走？</em></h1>
+                    <p>跟着阿米娅，把 A* 的每一次选择看明白。<br>一张地图，一段代码，一场你能亲手参与的寻路行动。</p>
+                    <div class="tags">
+                        <span>零基础友好</span>
+                        <span>地图 × 代码同步</span>
+                        <span>可自由编辑</span>
+                    </div>
+                </div>
+                <div class="hero-art">
+                    <div class="orbit"></div>
+                    <span class="coord">MISSION 01<br>寻找补给站</span>
+                    <img src="assets/amiya.png" alt="拿着导航罗盘的 Q 版阿米娅" class="amiya">
+                    <div class="bubble">博士，我们一起找条近路吧！</div>
+                    <span class="fan">明日方舟同人学习演示 · AI 生成插画</span>
+                </div>
+            </section>
+            <!-- 先做 15 格迷你例题 -->
+            <section id="learn" class="walkthrough" aria-labelledby="learn-title">
+                <div class="section-head">
+                    <div>
+                        <span class="eyebrow">01 / GUIDED WALKTHROUGH</span>
+                        <h2 id="learn-title">先用 15 个格子，做一次 A* 的选择</h2>
+                    </div>
+                    <span class="read-time">零基础 · 约 3 分钟</span>
+                </div>
+                <p class="walk-intro">阿米娅要从起点去补给站。每次只能上下左右走一格，灰色格子是墙。<strong>A* 会把发现的路口记在一张候选表上，每轮挑预计总步数最少的一个，看看从那里还能往哪走。</strong></p>
+                <div class="walk-terms">
+                    <div>
+                        <b>g</b>
+                        <span>到这格已经走了几步</span>
+                        <small>从起点沿已找到的路线数。</small>
+                    </div>
+                    <div>
+                        <b>h</b>
+                        <span>到终点至少还要几步</span>
+                        <small>暂时忽略墙，数横向差加纵向差。</small>
+                    </div>
+                    <div>
+                        <b>f = g + h</b>
+                        <span>经这格到终点的预计总步数</span>
+                        <small>先比较 f，越小越先检查。</small>
+                    </div>
+                </div>
+                <div class="walk-demo panel">
+                    <div class="walk-map">
+                        <h3>补给站就在墙后</h3>
+                        <div id="walk-grid" aria-label="5 列 3 行教学地图"></div>
+                        <div class="legend">
+                            <span><i class="open"></i>候选</span>
+                            <span><i class="closed"></i>检查过</span>
+                            <span><i class="current"></i>选中</span>
+                            <span><i class="path"></i>最短路线</span>
+                        </div>
+                    </div>
+                    <div class="walk-choices">
+                        <div id="walk-progress" class="eyebrow"></div>
+                        <h3 id="walk-title"></h3>
+                        <p id="walk-description"></p>
+                        <div id="walk-candidates" aria-label="待检查的候选格"></div>
+                        <p id="walk-feedback" aria-live="polite"></p>
+                        <div class="walk-actions">
+                            <button type="button" id="walk-back">上一轮</button>
+                            <button type="button" id="walk-action" class="primary">看本轮答案</button>
+                        </div>
+                    </div>
+                </div>
+                <details>
+                    <summary>为什么选中终点时就能停？</summary>
+                    <p>这张地图上，h 忽略了墙，所以最多只会低估还要走几步。终点的 h 是 0，因此终点的 f 就是已经找到的路线长度。等终点在候选表中排到第一，其他候选即使按最乐观的估计也无法更短。沿着每格记录的来路，就能把整条最短路线找回来。</p>
+                </details>
+                <p class="walk-transfer"><strong>在下方实验室看代码</strong>：第 5 行挑候选，第 12–17 行比较新旧走法、记下更短的来路，第 7 行把路线找回来。<a href="#lab">去完整实验室 ↓</a></p>
+            </section>
+            <!-- 再进入完整实验室 -->
+            <section id="lab">
+                <div class="section-head">
+                    <div>
+                        <span class="eyebrow">02 / INTERACTIVE LAB</span>
+                        <h2>把原理放进完整地图</h2>
+                    </div>
+                    <button id="help">操作说明 ⓘ</button>
+                </div>
+                <div class="workspace">
+                    <section class="map-panel panel">
+                        <div class="panel-top">
+                            <h3>行动地图 <small>12 × 9</small></h3>
+                            <select id="scene" aria-label="选择地图">
+                                <option value="intro">入门 · 绕过围墙</option>
+                                <option value="maze">进阶 · 曲折走廊</option>
+                                <option value="empty">空白 · 自由创作</option>
+                                <option value="blocked">挑战 · 无路可走</option>
+                            </select>
+                        </div>
+                        <div class="tools" role="group" aria-label="地图编辑工具">
+                            <button data-tool="wall" class="selected">▧ 障碍</button>
+                            <button data-tool="erase">⌫ 橡皮</button>
+                            <button data-tool="start">⚑ 起点</button>
+                            <button data-tool="goal">◆ 终点</button>
+                            <button id="clear">清空障碍</button>
+                        </div>
+                        <div class="map-wrap">
+                            <div id="grid" role="grid" aria-label="寻路地图"></div>
+                        </div>
+                        <div class="legend">
+                            <span><i class="open"></i>待探索</span>
+                            <span><i class="closed"></i>已探索</span>
+                            <span><i class="current"></i>当前</span>
+                            <span><i class="path"></i>最短路径</span>
+                            <label><input type="checkbox" id="values" checked>显示 f 值</label>
+                        </div>
+                        <p class="hint" id="mapHint">点击或拖动绘制障碍；起点与终点不能重合。每步只允许上下左右移动。</p>
+                        <div class="transport">
+                            <button id="reset" title="重新开始">↺</button>
+                            <button id="prev" title="上一步">‹</button>
+                            <button id="play" class="primary">▶ 开始演示</button>
+                            <button id="next">下一步 →</button>
+                            <label>速度 <select id="speed" aria-label="播放速度"><option value="1100">慢速</option><option value="500" selected>标准</option><option value="100">快速</option></select></label>
+                        </div>
+                        <div class="timeline">
+                            <input type="range" id="timeline" min="0" max="0" value="0" aria-label="执行进度">
+                            <span id="progress">准备就绪</span>
+                        </div>
+                    </section>
+                    <section class="code-panel panel">
+                        <div class="panel-top">
+                            <h3>代码在这里发生</h3>
+                            <span class="file-label">Python · 教学版</span>
+                        </div>
+                        <div id="code"></div>
+                        <div class="code-note">与演示逐步对应的 Python 核心流程。<br>init 初始化代价表与集合；priority 按 f、h、加入顺序排序。<br>neighbors 返回可通行邻格；trace 回溯父节点。</div>
+                    </section>
+                    <aside class="insight">
+                        <div class="guide panel">
+                            <span class="eyebrow">阿米娅的行动笔记</span>
+                            <h3 id="stepTitle">先认识这张地图</h3>
+                            <p id="narration" aria-live="polite">从 ⚑ 出发，去 ◆ 补给站。你可以先修改地图，再点击「下一步」，看看算法如何思考。</p>
+                            <div id="lineBadge">等待执行</div>
+                        </div>
+                        <div class="score panel">
+                            <h3>每一格的选择依据</h3>
+                            <div class="formula"><b>f</b> = <span>g</span> + <em>h</em></div>
+                            <p>已走的路 + 估计还要走的路</p>
+                            <div id="nodeDetail">点击地图中的格子，查看它的分数。</div>
+                        </div>
+                        <div class="stats">
+                            <div>
+                                <b id="visited">0</b>
+                                <span>已探索格数</span>
+                            </div>
+                            <div>
+                                <b id="distance">—</b>
+                                <span>最终路径步数</span>
+                            </div>
+                        </div>
+                        <button id="quiz" class="quiz">✧ 猜猜下一格，换你来选</button>
+                        <p id="quizFeedback" aria-live="polite"></p>
+                    </aside>
+                </div>
+            </section>
+            <footer>
+                <b>✳ 寻路小队</b>
+                <span>把抽象算法，变成看得见的小冒险。</span>
+                <small>第二版 · 四方向 / 等权重 / 曼哈顿距离</small>
+            </footer>
+        </main>
+        <dialog id="helpDialog">
+            <h2>欢迎来到寻路实验室</h2>
+            <p>① 用「障碍 / 橡皮 / 起点 / 终点」编辑地图。触屏可逐格点击。</p>
+            <p>② 点「下一步」逐行观察，或「开始演示」自动播放。支持暂停、上一步及进度回放。</p>
+            <p>③ 演示期间点击格子查看 g / h / f。要修改地图，先点击 ↺ 重置。</p>
+            <p>④ 蓝色待探索格出现后，点「猜猜下一格」，再点击你认为下一次会被选中的蓝色格子。</p>
+            <button id="closeHelp" class="primary">明白了，出发！</button>
+        </dialog>
+        <script src="astar.js"></script>
+        <script src="app.js"></script>
+        <script src="walkthrough.js"></script>
+    </body>
+</html>

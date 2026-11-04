@@ -1,0 +1,93 @@
+.walkthrough {
+    margin-bottom: 54px;
+}
+
+.walk-intro {
+    max-width: 72ch;
+    line-height: 1.85;
+}
+
+.walk-terms {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0 14px;
+}
+
+.walk-terms > div {
+    display: grid;
+    gap: 3px;
+    padding: 13px 16px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+}
+
+.walk-terms b {
+    color: var(--teal);
+    font: bold 19px Consolas, monospace;
+}
+
+.walk-terms small {
+    color: var(--muted);
+}
+
+.walk-demo {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.75fr) minmax(280px, 1fr);
+}
+
+.walk-map, .walk-choices {
+    padding: clamp(16px, 3vw, 28px);
+}
+
+.walk-map {
+    background: #eef2e9;
+}
+
+#walk-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 5px;
+    margin: 15px 0;
+}
+
+.walk-cell {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1.25;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: #fafbf7;
+    font-weight: 700;
+    font-size: clamp(10px, 1.4vw, 15px);
+}
+
+.walk-cell.wall { background: #74847a; color: white; }
+.walk-cell.open { background: #d2e8f1; color: #215e75; }
+.walk-cell.closed { background: #d8e9d6; color: #496047; }
+.walk-cell.current { background: #168878; color: white; }
+.walk-cell.path { background: #f6d887; color: #714e15; }
+.walk-map .legend { padding: 0; font-size: 11px; }
+.walk-choices h3 { margin-top: 6px; font-size: 18px; }
+.walk-choices p, .walk-transfer { line-height: 1.75; }
+
+#walk-candidates {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.walk-option { background: #edf6fa; font-size: 13px; }
+.walk-option:disabled { opacity: 1; }
+.walk-option.picked { background: #168878; color: white; opacity: 1; }
+#walk-feedback { min-height: 3.5em; color: #345c51; }
+.walk-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.walk-transfer a { display: inline-block; margin-left: 9px; color: var(--teal); text-decoration: underline; }
+
+@media (max-width: 700px) {
+    .walk-demo { grid-template-columns: 1fr; }
+    .walk-terms { grid-template-columns: 1fr; gap: 6px; }
+    .walk-terms > div { grid-template-columns: 96px 1fr; }
+    .walk-terms small { grid-column: 2; }
+}

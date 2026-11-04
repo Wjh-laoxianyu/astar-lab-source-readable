@@ -1,0 +1,24 @@
+# 寻路小队 · 第二版可读源码
+
+解压后用浏览器打开 `dist/index.html`。页面可以直接运行，无需安装依赖。
+
+## 阅读顺序
+
+1. **`dist/astar.js`**：先看 `buildEvents`。它用候选表找最短路线，并用 `recordStep` 记录每个教学步骤。辅助函数在前面，分别负责计算距离、选择候选格、查找邻居和回溯路线。
+2. **`dist/walkthrough.js`**：读取同一份搜索记录，把它按轮展示成 15 格例题。
+3. **`dist/app.js`**：负责完整实验室的地图编辑、播放、代码高亮和问答。
+4. **`dist/index.html`、`dist/style.css`、`dist/walkthrough.css`**：页面结构和样式。插画在 `dist/assets`。
+
+页面显示的 Python 教学代码由 `app.js` 中的 `TEACHING_CODE` 定义，浏览器执行的算法在 `astar.js`。两者通过 `recordStep` 的行号对应。
+
+格子编号从 0 开始，从左到右、从上到下。页面给读者看的坐标从 1 开始。地图只允许上下左右移动，每走一格的代价为 1。
+
+## 校验算法
+
+如果已安装 Node.js，可以在解压目录中运行：
+
+```text
+node check.cjs
+```
+
+脚本会将 A* 和广度优先搜索在 100 张地图上的结果进行比较。

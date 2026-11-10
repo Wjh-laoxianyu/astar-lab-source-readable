@@ -1,3 +1,110 @@
+.algorithm-intro {
+    padding-top: 24px;
+    margin-bottom: 20px;
+}
+
+.intro-lead {
+    max-width: 76ch;
+    line-height: 1.9;
+    color: #53665e;
+}
+
+.intro-lead strong {
+    color: var(--ink);
+}
+
+.algorithm-flow {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin: 20px 0 14px;
+}
+
+.algorithm-flow article {
+    padding: 17px 18px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+}
+
+.flow-number {
+    color: var(--teal);
+    font: bold 12px Consolas, monospace;
+}
+
+.algorithm-flow h3 {
+    margin: 9px 0 7px;
+    font-size: 14px;
+}
+
+.algorithm-flow p,
+.algorithm-example p {
+    margin: 0;
+    line-height: 1.85;
+    color: #61736b;
+}
+
+.algorithm-flow p b,
+.algorithm-example p b {
+    color: var(--teal);
+}
+
+.algorithm-example {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 20px;
+    padding: 19px 22px;
+    border-radius: 10px;
+    background: #e7eee1;
+}
+
+.algorithm-example p {
+    margin-top: 7px;
+}
+
+.algorithm-example > div > small {
+    display: block;
+    margin-top: 8px;
+    line-height: 1.7;
+    color: var(--muted);
+}
+
+.algorithm-example-score {
+    display: grid;
+    gap: 4px;
+    min-width: 165px;
+    text-align: center;
+}
+
+.algorithm-example-score span {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.algorithm-example-score b {
+    color: var(--teal);
+    font: bold 25px Consolas, monospace;
+}
+
+.algorithm-example-score small {
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.intro-next {
+    margin: 16px 0 0;
+    line-height: 1.9;
+    color: #53665e;
+}
+
+.intro-next a {
+    margin-left: 8px;
+    color: var(--teal);
+    font-weight: 700;
+    text-decoration: underline;
+}
+
 .walkthrough {
     margin-bottom: 54px;
 }
@@ -86,6 +193,10 @@
 .walk-transfer a { display: inline-block; margin-left: 9px; color: var(--teal); text-decoration: underline; }
 
 @media (max-width: 700px) {
+    .algorithm-flow { grid-template-columns: 1fr; gap: 7px; }
+    .algorithm-example { grid-template-columns: 1fr; gap: 12px; padding: 16px; }
+    .algorithm-example-score { min-width: 0; }
+    .intro-next a { display: inline-block; margin-left: 0; }
     .walk-demo { grid-template-columns: 1fr; }
     .walk-terms { grid-template-columns: 1fr; gap: 6px; }
     .walk-terms > div { grid-template-columns: 96px 1fr; }

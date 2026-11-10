@@ -13,8 +13,8 @@
         <header>
             <a class="brand" href="#">✳ <span>寻路小队<small>PATHFINDING CLUB</small></span></a>
             <nav>
+                <a href="#intro">A* 是什么</a>
                 <a href="#learn">先做迷你例题</a>
-                <a href="#lab">互动实验室</a>
             </nav>
             <span class="edition">学习任务 / 001</span>
         </header>
@@ -37,6 +37,46 @@
                     <div class="bubble">博士，我们一起找条近路吧！</div>
                     <span class="fan">明日方舟同人学习演示 · AI 生成插画</span>
                 </div>
+            </section>
+            <section id="intro" class="algorithm-intro" aria-labelledby="intro-title">
+                <div class="section-head">
+                    <div>
+                        <span class="eyebrow">00 / START HERE</span>
+                        <h2 id="intro-title">A* 是什么？像导航一样，一步步找路</h2>
+                    </div>
+                    <span class="read-time">零基础 · 约 2 分钟</span>
+                </div>
+                <p class="intro-lead"><strong>A*（读作“A 星”）是一种找路算法。</strong>它不会盲目地把每条路都走到底，而是记下已经发现的路口，并优先检查“走到这里的路程 + 估计到终点的路程”较短的路口。</p>
+                <div class="algorithm-flow">
+                    <article>
+                        <span class="flow-number">01</span>
+                        <h3>数数已经走了多远：g</h3>
+                        <p><b>g</b> 是从起点走到当前格的实际步数。走一格就加一步，不需要猜。</p>
+                    </article>
+                    <article>
+                        <span class="flow-number">02</span>
+                        <h3>估计还要走多远：h</h3>
+                        <p><b>h</b> 是从当前格到终点的估计步数。本实验只能上下左右走，所以用横向差加纵向差；估算时先忽略墙。</p>
+                    </article>
+                    <article>
+                        <span class="flow-number">03</span>
+                        <h3>合起来排个优先级：f = g + h</h3>
+                        <p><b>f</b> 越小，表示这条路目前看起来越有希望，A* 就越早检查它。算法还会记住每格从哪里来，以便最后还原路线。</p>
+                    </article>
+                </div>
+                <div class="algorithm-example">
+                    <div>
+                        <span class="eyebrow">举个例子</span>
+                        <p>路口甲已经走了 3 步，估计还要走 4 步，所以 <b>f = 3 + 4 = 7</b>；路口乙已经走了 2 步，估计还要走 6 步，所以 <b>f = 2 + 6 = 8</b>。A* 会先检查甲，因为 7 比 8 小。</p>
+                        <small>这只是“目前的估计”。A* 会继续检查路口，直到确认找到通往终点的最短路线。</small>
+                    </div>
+                    <div class="algorithm-example-score" aria-label="f 等于 g 加 h，三加四等于七">
+                        <span>f = g + h</span>
+                        <b>3 + 4 = 7</b>
+                        <small>先检查 f 较小的路口</small>
+                    </div>
+                </div>
+                <p class="intro-next"><strong>接下来动手试试：</strong>先在 15 格小地图里猜下一步，再到完整实验室改地图、播放算法，并对照每一步的代码。<a href="#learn">开始迷你例题 ↓</a></p>
             </section>
             <!-- 先做 15 格迷你例题 -->
             <section id="learn" class="walkthrough" aria-labelledby="learn-title">

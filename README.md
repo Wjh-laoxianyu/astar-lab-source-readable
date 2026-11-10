@@ -4,10 +4,11 @@
 
 ## 阅读顺序
 
-1. **`dist/astar.js`**：先看 `buildEvents`。它用候选表找最短路线，并用 `recordStep` 记录每个教学步骤。辅助函数在前面，分别负责计算距离、选择候选格、查找邻居和回溯路线。
-2. **`dist/walkthrough.js`**：读取同一份搜索记录，把它按轮展示成 15 格例题。
-3. **`dist/app.js`**：负责完整实验室的地图编辑、播放、代码高亮和问答。
-4. **`dist/index.html`、`dist/style.css`、`dist/walkthrough.css`**：页面结构和样式。插画在 `dist/assets`。
+1. 在页面中按 **A* 简介 → 15 格迷你例题 → 互动实验室** 的顺序学习：先理解 g、h、f，再亲手判断下一格，最后在完整地图上观察算法和代码。
+2. **`dist/astar.js`**：看 `buildEvents`。它用候选表找最短路线，并用 `recordStep` 记录每个教学步骤。辅助函数分别负责计算距离、选择候选格、查找邻居和回溯路线。
+3. **`dist/walkthrough.js`**：读取同一份搜索记录，把它按轮展示成 15 格例题。
+4. **`dist/app.js`**：负责完整实验室的地图编辑、播放、代码高亮和问答。
+5. **`dist/index.html`、`dist/style.css`、`dist/walkthrough.css`**：页面结构和样式。插画在 `dist/assets`。
 
 页面显示的 Python 教学代码由 `app.js` 中的 `TEACHING_CODE` 定义，浏览器执行的算法在 `astar.js`。两者通过 `recordStep` 的行号对应。
 

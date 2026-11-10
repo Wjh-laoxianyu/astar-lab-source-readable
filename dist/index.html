@@ -7,6 +7,7 @@
         <meta name="description" content="和阿米娅一起，用地图、代码与互动练习理解 A* 寻路算法。">
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="walkthrough.css">
+        <link rel="stylesheet" href="race.css">
     </head>
     <body>
         <!-- 页首与导航 -->
@@ -15,6 +16,7 @@
             <nav>
                 <a href="#intro">A* 是什么</a>
                 <a href="#learn">先做迷你例题</a>
+                <a href="#race">博士竞速</a>
             </nav>
             <span class="edition">学习任务 / 001</span>
         </header>
@@ -220,6 +222,61 @@
                     </aside>
                 </div>
             </section>
+            <section id="race" aria-labelledby="race-title">
+                <div class="section-head">
+                    <div>
+                        <span class="eyebrow">03 / DOCTOR RACE</span>
+                        <h2 id="race-title">同一张地图，两位博士，谁先到？</h2>
+                    </div>
+                    <span class="read-time">A* × Dijkstra</span>
+                </div>
+                <p class="race-intro">蓝队用 <b>A*</b> 朝目标规划，橙队用 <b>迪杰斯特拉</b> 由近及远搜索。每回合各选出一个格子，找到最短路线后，博士再每回合跑一格。</p>
+                <div class="race-layout">
+                    <div class="panel race-map-panel">
+                        <div class="panel-top">
+                            <h3>共用赛场 <small>12 × 9 · 四方向等权重</small></h3>
+                            <button id="race-import" type="button">使用实验室当前地图</button>
+                        </div>
+                        <div class="race-tools">
+                            <label>编辑 <select id="race-tool" aria-label="竞速地图编辑工具"><option value="wall">障碍 / 清除</option><option value="start">起点</option><option value="goal">终点</option></select></label>
+                            <label>地图 <select id="race-scene" aria-label="竞速地图场景"><option value="intro">绕过围墙</option><option value="maze">折返迷宫</option><option value="empty">空白地图</option><option value="blocked">无路可走</option><option value="custom" disabled>自定义地图</option></select></label>
+                            <span>重置后可点击格子编辑</span>
+                        </div>
+                        <div class="race-board-wrap">
+                            <div id="race-board">
+                                <div id="race-grid" role="group" aria-label="两种算法共用的竞速地图"></div>
+                                <svg id="race-paths" viewBox="0 0 12 9" preserveAspectRatio="none" aria-hidden="true"><polyline class="race-route race-route-a"></polyline><polyline class="race-route race-route-d"></polyline></svg>
+                                <div id="race-doctor-a" class="race-doctor race-team-a" aria-hidden="true"><img src="assets/doctor-run.png" alt=""><span>A*</span></div>
+                                <div id="race-doctor-d" class="race-doctor race-team-d" aria-hidden="true"><img src="assets/doctor-run.png" alt=""><span>D</span></div>
+                            </div>
+                        </div>
+                        <div class="race-legend"><span><i class="race-swatch-a"></i>A* 已搜索</span><span><i class="race-swatch-d"></i>Dijkstra 已搜索</span><span><i class="race-swatch-both"></i>共同搜索</span><span>实线 A* / 虚线 Dijkstra 路线</span></div>
+                        <p id="race-map-hint" class="hint">点击格子切换障碍；两队始终使用相同的地图、起点与终点。</p>
+                        <div class="transport race-transport">
+                            <button id="race-reset" type="button">↺ 重置</button>
+                            <button id="race-prev" type="button" aria-label="竞速上一回合">←</button>
+                            <button id="race-play" class="primary" type="button">▶ 开始竞速</button>
+                            <button id="race-next" type="button">下一回合</button>
+                            <label>速度 <select id="race-speed" aria-label="竞速播放速度"><option value="800">慢速</option><option value="300" selected>标准</option><option value="80">快速</option></select></label>
+                        </div>
+                        <div class="timeline"><input id="race-timeline" type="range" min="0" max="0" value="0" aria-label="竞速回合进度"><span id="race-progress">准备就绪</span></div>
+                    </div>
+                    <aside class="race-sidebar">
+                        <article class="panel race-card race-team-a">
+                            <div class="race-card-head"><img src="assets/doctor-run.png" alt="明日方舟博士 Q 版跑步形象"><div><span class="eyebrow">BLUE / 蓝队博士</span><h3>A* <small>目标引导</small></h3><code>f = g + h</code></div></div>
+                            <p id="race-status-a">等待发令</p>
+                            <dl><div><dt>搜索格数</dt><dd id="race-count-a">0</dd></div><div><dt>路径步数</dt><dd id="race-length-a">—</dd></div><div><dt>到达回合</dt><dd id="race-arrival-a">—</dd></div></dl>
+                        </article>
+                        <article class="panel race-card race-team-d">
+                            <div class="race-card-head"><img src="assets/doctor-run.png" alt=""><div><span class="eyebrow">ORANGE / 橙队博士</span><h3>Dijkstra <small>由近及远</small></h3><code>f = g（h = 0）</code></div></div>
+                            <p id="race-status-d">等待发令</p>
+                            <dl><div><dt>搜索格数</dt><dd id="race-count-d">0</dd></div><div><dt>路径步数</dt><dd id="race-length-d">—</dd></div><div><dt>到达回合</dt><dd id="race-arrival-d">—</dd></div></dl>
+                        </article>
+                        <div class="race-verdict" role="status" aria-live="polite"><b id="race-result">博士，就位！</b><p id="race-explanation">先找路，再出发。看看启发式估计能省下多少次搜索。</p></div>
+                        <p class="race-footnote">竞速回合 = 搜索回合 + 行走步数，不代表程序实际耗时。搜索格数含选出的终点。两队都求最短路，A* 不保证每张地图都领先。博士为 AI 生成的明日方舟同人形象。</p>
+                    </aside>
+                </div>
+            </section>
             <footer>
                 <b>✳ 寻路小队</b>
                 <span>把抽象算法，变成看得见的小冒险。</span>
@@ -237,5 +294,7 @@
         <script src="astar.js"></script>
         <script src="app.js"></script>
         <script src="walkthrough.js"></script>
+        <script src="race-engine.js"></script>
+        <script src="race.js"></script>
     </body>
 </html>

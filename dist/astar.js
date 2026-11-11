@@ -113,6 +113,10 @@ function buildEvents({ origin, target, barriers, width, height }) {
     const displayedPath = [];
     let currentCell = null;
     let focusedCell = null;
+    let neighborCell = null;
+    let newCostValue = null;
+    let traceCell = null;
+    let traceCode = '';
 
     /**
      * 记录当前状态。复制表和集合，后续的搜索就不会改写之前的步骤。
@@ -127,6 +131,10 @@ function buildEvents({ origin, target, barriers, width, height }) {
             text,
             current: currentCell,
             focus: focusedCell,
+            neighbor: neighborCell,
+            new_g: newCostValue,
+            traceCell,
+            traceCode,
             open: [...candidates],
             closed: [...checkedCells],
             g: { ...costsFromStart },
@@ -166,12 +174,24 @@ function buildEvents({ origin, target, barriers, width, height }) {
 
         // 核心二：终点被选中时，再沿记录好的来路取出完整路径。
         if (reachedTarget) {
-            const route = reconstructPath(parents, origin, target);
-            for (const cell of route) {
-                displayedPath.push(cell);
-                recordStep(7, '沿着路标，还原最短路径',
-                    `每次更新代价时留下的父节点，就是回程路标。最短路径一共 ${route.length - 1} 步。`);
+            traceCell = target;
+            displayedPath.push(traceCell);
+            traceCode = 'path = [goal]';
+            recordStep(7, '先记下终点', '现在进入 trace 函数。列表先放终点，随后沿 parent 倒着查来路。');
+            while (traceCell !== origin) {
+                traceCode = 'current = parent[current]';
+                const previousCell = traceCell;
+                traceCell = parents[traceCell];
+                focusedCell = traceCell;
+                recordStep(7, '查一次来路记录',
+                    `parent[${formatCoordinate(previousCell, width)}] = ${formatCoordinate(traceCell, width)}。先移动回溯指针，列表还未添加。`);
+                displayedPath.push(traceCell);
+                traceCode = 'path.append(current)';
+                recordStep(7, '把查到的格子加入列表', '列表目前是终点到起点的方向。');
             }
+            displayedPath.reverse();
+            traceCode = 'path.reverse()';
+            recordStep(7, '反转列表，得到完整路线', `现在从起点排到终点，共 ${displayedPath.length - 1} 步。trace 返回这条路线。`);
             return events;
         }
 
@@ -183,6 +203,7 @@ function buildEvents({ origin, target, barriers, width, height }) {
         const neighbors = getWalkableNeighbors(currentCell, width, height, barriers);
         for (const neighbor of neighbors) {
             focusedCell = neighbor;
+            neighborCell = neighbor;
             const neighborLabel = formatCoordinate(neighbor, width);
             recordStep(10, '查看一个可通行的邻居',
                 `查看 ${neighborLabel}。只能上下左右走，不能穿过灰色障碍。`);
@@ -195,6 +216,7 @@ function buildEvents({ origin, target, barriers, width, height }) {
 
             // 核心三：只有发现更短的来路，才覆盖邻格原来的 g 和来路记录。
             const newCost = costsFromStart[currentCell] + 1;
+            newCostValue = newCost;
             const oldCost = costsFromStart[neighbor];
             recordStep(12, '试算：再走一步的代价',
                 `从当前格走到邻居只需 1 步：new_g = ${costsFromStart[currentCell]} + 1 = ${newCost}。`);

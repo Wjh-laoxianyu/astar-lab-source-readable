@@ -8,10 +8,71 @@
     let frames = [];
     let round = 0;
     let timer = null;
+    let predicting = false;
+    let predictionAnswers = [null, null];
     const grid = find('grid');
     const board = find('board');
     const keys = ['a', 'd'];
     const names = ['A*', 'Dijkstra'];
+
+    // 把选点解释放在赛场之后，保留上方地图与播放按钮的空间。
+    const comparison = document.createElement('section');
+    comparison.className = 'panel learning-panel';
+    comparison.innerHTML = `
+        <h3>这一轮为什么选它？把候选表摊开看</h3>
+        <p id="race-decision-note">下面是各队本轮选点前的真实候选表。</p>
+        <button id="race-predict" type="button">先猜下一回合会选谁</button>
+        <div class="learning-columns">
+            <div><h3>A*：先比 g+h，再比 h</h3><pre class="learning-code">min(opened, key=lambda cell: (g[cell] + h(cell, goal), h(cell, goal)))</pre><p id="race-choice-a"></p><div class="learning-table-wrap"><table class="learning-table"><thead><tr><th>格子（列, 行）</th><th>g</th><th>h</th><th>g+h</th></tr></thead><tbody id="race-candidates-a"></tbody></table></div></div>
+            <div><h3>Dijkstra：只比 g</h3><pre class="learning-code">min(opened, key=lambda cell: g[cell])</pre><p id="race-choice-d"></p><div class="learning-table-wrap"><table class="learning-table"><thead><tr><th>格子（列, 行）</th><th>g</th><th>h=0</th><th>g</th></tr></thead><tbody id="race-candidates-d"></tbody></table></div></div>
+        </div>
+        <p>完全同分时，都保留先加入的候选。A* 的 h 引导搜索朝向目标；Dijkstra 把 h 当作 0。改变的是检查顺序，两者都在寻找最短路线。</p>`;
+    document.getElementById('race').append(comparison);
+
+    /**
+     * 显示本轮决策使用的数据；行走阶段不沿用之前的候选，避免误读。
+     * @param {object[]} teams 当前回合两队的独立快照。
+     */
+    function renderDecisions(teams) {
+        const decisionTeams = predicting ? frames[round + 1] : teams;
+        find('decision-note').textContent = predicting
+            ? `先预测第 ${round + 1} 回合：点击各队候选表中的坐标作答，地图仍停在第 ${round} 回合。核对后点赛场的「下一回合」继续。`
+            : '各队本轮选点前的真实候选表，按加入顺序排列；黄色标记最终选择。两队的候选名单可能不同。';
+        find('predict').disabled = predicting || !frames[round + 1]?.some(team => team.decision.length);
+        decisionTeams.forEach((team, index) => {
+            const key = keys[index];
+            const body = find(`candidates-${key}`);
+            body.replaceChildren();
+            const candidates = team.decision;
+            let description = candidates.length
+                ? `第 ${round} 回合选中 ${formatCoordinate(team.chosen, width)}。候选表包含 ${candidates.length} 格。`
+                : round === 0 ? '点「下一回合」查看第一次选择。'
+                    : team.phase === 'unreachable' ? '本轮没有候选可以继续检查。' : '本轮没有搜索选点，已找到路线或完成行走。';
+            const answer = predictionAnswers[index];
+            if (predicting) {
+                description = candidates.length ? '轮到你：按这队的评分规则选择一格。' : '下一回合没有搜索选点，无需作答。';
+                if (answer === team.chosen && answer !== null) description = `答对！将选中 ${formatCoordinate(team.chosen, width)}。`;
+                else if (answer !== null) description = '还没选对，比较评分；同分时按说明继续比较，再试一次。';
+            }
+            find(`choice-${key}`).textContent = description;
+            candidates.forEach(candidate => {
+                const reveal = !predicting || answer === team.chosen;
+                appendLearningRow(body, [formatCoordinate(candidate.cell, width), String(candidate.g), String(candidate.h), String(candidate.f)],
+                    reveal && candidate.cell === team.chosen ? [0, 1, 2, 3] : []);
+                if (predicting) {
+                    const button = document.createElement('button');
+                    button.textContent = formatCoordinate(candidate.cell, width);
+                    button.disabled = answer === team.chosen;
+                    button.setAttribute('aria-label', `${names[index]} 预测选择 ${button.textContent}`);
+                    button.addEventListener('click', () => {
+                        predictionAnswers[index] = candidate.cell;
+                        renderDecisions(teams);
+                    });
+                    body.lastElementChild.firstElementChild.replaceChildren(button);
+                }
+            });
+        });
+    }
 
     function pause() {
         clearInterval(timer);
@@ -21,6 +82,7 @@
 
     function reset() {
         pause();
+        predicting = false;
         round = 0;
         frames = PathRace.buildRaceFrames(map);
         render();
@@ -63,6 +125,7 @@
     }
 
     function advance() {
+        predicting = false;
         if (round < frames.length - 1) round++;
         if (round === frames.length - 1) pause();
         render();
@@ -77,6 +140,7 @@
     }
 
     function toggle() {
+        predicting = false;
         if (timer !== null) {
             pause();
             render();
@@ -91,6 +155,7 @@
 
     function render() {
         const teams = frames[round];
+        renderDecisions(teams);
         const searched = teams.map(team => new Set(team.closed));
         const running = timer !== null;
         const finished = round === frames.length - 1;
@@ -183,13 +248,21 @@
         grid.append(button);
     }
     find('import').addEventListener('click', importMap);
+    find('predict').addEventListener('click', () => {
+        pause();
+        pausePlayback();
+        predicting = true;
+        predictionAnswers = [null, null];
+        render();
+    });
     find('scene').addEventListener('change', event => loadMap(event.target.value));
     find('reset').addEventListener('click', reset);
     find('play').addEventListener('click', toggle);
     find('next').addEventListener('click', () => { pause(); advance(); });
-    find('prev').addEventListener('click', () => { pause(); round = Math.max(0, round - 1); render(); });
+    find('prev').addEventListener('click', () => { pause(); predicting = false; round = Math.max(0, round - 1); render(); });
     find('timeline').addEventListener('input', event => {
         pause();
+        predicting = false;
         round = Number(event.target.value);
         render();
     });

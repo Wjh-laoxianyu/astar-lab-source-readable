@@ -6,23 +6,23 @@ const DEFAULT_GOAL = 58;
 
 // 这 18 行是页面展示的教学代码，行号与 astar.js 的 recordStep 对应。
 const TEACHING_CODE = [
-    'def astar(start, goal):',
-    '    opened = {start}',
-    '    g, f, parent, closed = init(start)',
+    'def astar(grid, start, goal):',
+    '    opened = {start: None}',
+    '    g, f, parent, closed = init(start, goal)',
     '    while opened:',
-    '        current = min(opened, key=priority)',
+    '        current = min(opened, key=lambda cell: (f[cell], h(cell, goal)))',
     '        if current == goal:',
     '            return trace(parent, goal)',
-    '        opened.remove(current)',
+    '        del opened[current]',
     '        closed.add(current)',
-    '        for nb in neighbors(current):',
+    '        for nb in neighbors(grid, current):',
     '            if nb in closed: continue',
     '            new_g = g[current] + 1',
     '            if new_g < g.get(nb, inf):',
     '                parent[nb] = current',
     '                g[nb] = new_g',
     '                f[nb] = new_g + h(nb, goal)',
-    '                opened.add(nb)',
+    '                opened[nb] = None',
     '    return None',
 ];
 
@@ -301,9 +301,9 @@ function renderLab() {
     $('#stepTitle').textContent = step.title || '先认识这张地图';
     $('#narration').textContent = step.text
         || '从 ⚑ 出发，去 ◆ 补给站。你可以先修改地图，再点击「下一步」，看看算法如何思考。';
-    $('#lineBadge').textContent = step.line ? `正在执行 · 第 ${step.line} 行` : '等待执行';
+    $('#lineBadge').textContent = step.line ? `已执行 · 第 ${step.line} 行` : '等待执行';
     $('#visited').textContent = step.closed.length;
-    $('#distance').textContent = step.path.length ? step.path.length - 1 : '—';
+    $('#distance').textContent = step.traceCode === 'path.reverse()' ? step.path.length - 1 : '—';
     $('#nodeDetail').textContent = describeCell(step, lab.inspectedCell ?? step.focus);
 
     const hasStarted = lab.stepIndex >= 0;
@@ -320,6 +320,7 @@ function renderLab() {
     $('#mapHint').textContent = hasStarted
         ? '演示中：点击格子查看分数；点击 ↺ 重置后可以编辑地图。'
         : '点击或拖动绘制障碍；起点与终点不能重合。每步只允许上下左右移动。';
+    if (typeof renderNotebook === 'function') renderNotebook();
 }
 
 /**

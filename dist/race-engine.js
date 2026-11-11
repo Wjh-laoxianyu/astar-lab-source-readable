@@ -12,6 +12,7 @@
             g: { [start]: 0 }, parent: {}, current: null,
             phase: 'searching', route: [], position: start, walked: 0,
             foundAt: null, arrivedAt: null,
+            decision: [], chosen: null,
         });
         const teams = [create('astar'), create('dijkstra')];
         const snapshot = team => ({
@@ -19,6 +20,7 @@
             current: team.current, phase: team.phase, route: [...team.route],
             position: team.position, walked: team.walked,
             foundAt: team.foundAt, arrivedAt: team.arrivedAt,
+            decision: team.decision.map(candidate => ({ ...candidate })), chosen: team.chosen,
         });
         const frames = [];
         const record = () => frames.push(teams.map(snapshot));
@@ -27,6 +29,8 @@
 
         for (let round = 1; !teams.every(finished); round++) {
             for (const team of teams) {
+                team.decision = [];
+                team.chosen = null;
                 if (finished(team)) continue;
                 if (team.phase === 'running') {
                     team.position = team.route[++team.walked];
@@ -40,6 +44,10 @@
                 // Set 保留加入顺序。A* 比 f，再比 h；Dijkstra 只比 g。
                 let best = null;
                 const h = cell => team.algorithm === 'astar' ? distance(cell) : 0;
+                // 保存选点前的完整候选表，避免把扩展后的新邻居误当成本轮候选。
+                team.decision = [...team.open].map(cell => ({
+                    cell, g: team.g[cell], h: h(cell), f: team.g[cell] + h(cell),
+                }));
                 for (const cell of team.open) {
                     if (best === null || team.g[cell] + h(cell) < team.g[best] + h(best)
                         || (team.g[cell] + h(cell) === team.g[best] + h(best) && h(cell) < h(best))) {
@@ -52,6 +60,7 @@
                     continue;
                 }
                 team.current = best;
+                team.chosen = best;
                 team.open.delete(best);
                 team.closed.add(best);
                 if (best === goal) {

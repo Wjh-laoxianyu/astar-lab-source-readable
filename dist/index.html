@@ -8,6 +8,7 @@
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="walkthrough.css">
         <link rel="stylesheet" href="race.css">
+        <link rel="stylesheet" href="learning.css">
     </head>
     <body>
         <!-- 页首与导航 -->
@@ -16,6 +17,7 @@
             <nav>
                 <a href="#intro">A* 是什么</a>
                 <a href="#learn">先做迷你例题</a>
+                <a href="#practice">亲手执行代码</a>
                 <a href="#race">博士竞速</a>
             </nav>
             <span class="edition">学习任务 / 001</span>
@@ -134,13 +136,35 @@
                     <summary>为什么选中终点时就能停？</summary>
                     <p>这张地图上，h 忽略了墙，所以最多只会低估还要走几步。终点的 h 是 0，因此终点的 f 就是已经找到的路线长度。等终点在候选表中排到第一，其他候选即使按最乐观的估计也无法更短。沿着每格记录的来路，就能把整条最短路线找回来。</p>
                 </details>
-                <p class="walk-transfer"><strong>在下方实验室看代码</strong>：第 5 行挑候选，第 12–17 行比较新旧走法、记下更短的来路，第 7 行把路线找回来。<a href="#lab">去完整实验室 ↓</a></p>
+                <p class="walk-transfer"><strong>接下来替电脑执行代码</strong>：先算一步代价，再判断要不要更新记录。<a href="#practice">开始代码练习 ↓</a></p>
+            </section>
+            <section id="practice" class="panel learning-panel" aria-labelledby="practice-title">
+                <span class="eyebrow">02 / YOU ARE THE COMPUTER</span>
+                <h2 id="practice-title">替电脑执行一次：新走法值得记下来吗？</h2>
+                <p>这是单独练习一次邻居检查的小场景，不改变下方实验室地图。当前格是 A，邻居是 B：到 A 已走 2 步，从 A 到 B 再走 1 步。先预测，答对后才执行。</p>
+                <label>练习情境 <select id="practice-case"><option value="better">发现更短路线：B 的旧记录是 5</option><option value="worse">保留旧路线：B 的旧记录是 1</option><option value="first">第一次发现 B：还没有记录</option></select></label>
+                <div class="learning-columns">
+                    <div>
+                        <p id="practice-progress" class="learning-step"></p>
+                        <pre id="practice-code" class="learning-code"></pre>
+                        <p id="practice-question"></p>
+                        <div id="practice-answers" class="learning-actions" role="group" aria-label="预测执行结果"></div>
+                        <p id="practice-feedback" class="learning-feedback" role="status"></p>
+                        <div class="learning-actions"><button id="practice-restart">↺ 重做本题</button><button id="practice-next" class="primary" disabled>执行下一行 →</button></div>
+                    </div>
+                    <div class="learning-prompt">
+                        <h3>阿米娅的记录本</h3>
+                        <p>箭头 A → B 表示这次尝试的走法。只有更短时，才改写 B 的记录。</p>
+                        <pre id="practice-state" class="learning-code"></pre>
+                        <p>注意：<code>new_g</code> 是试算结果；<code>g[B]</code> 是已经保存的记录。算出新值，不等于立刻覆盖旧值。</p>
+                    </div>
+                </div>
             </section>
             <!-- 再进入完整实验室 -->
             <section id="lab">
                 <div class="section-head">
                     <div>
-                        <span class="eyebrow">02 / INTERACTIVE LAB</span>
+                        <span class="eyebrow">03 / INTERACTIVE LAB</span>
                         <h2>把原理放进完整地图</h2>
                     </div>
                     <button id="help">操作说明 ⓘ</button>
@@ -192,7 +216,8 @@
                             <span class="file-label">Python · 教学版</span>
                         </div>
                         <div id="code"></div>
-                        <div class="code-note">与演示逐步对应的 Python 核心流程。<br>init 初始化代价表与集合；priority 按 f、h、加入顺序排序。<br>neighbors 返回可通行邻格；trace 回溯父节点。</div>
+                        <div class="code-note">点击任意代码行，查看白话解释。高亮表示本行已执行；地图与记事本显示执行后的状态。<br>opened 用有插入顺序的字典保存候选，None 是占位值。</div>
+                        <div id="line-explanation" role="status">试着点击第 5 行，看看程序如何比较候选。</div>
                     </section>
                     <aside class="insight">
                         <div class="guide panel">
@@ -221,11 +246,38 @@
                         <p id="quizFeedback" aria-live="polite"></p>
                     </aside>
                 </div>
+                <section class="panel learning-panel" aria-labelledby="notebook-title">
+                    <h3 id="notebook-title">程序的记事本 · 这一行改了什么？</h3>
+                    <p id="notebook-status" role="status">点击实验室的「下一步」开始。</p>
+                    <p>这里统一显示 Python 坐标 <b>(行, 列)，从 0 开始</b>。例如地图标注 (2, 5) 是第 2 列、第 5 行，对应 Python 的 (4, 1)。黄色单元格表示本行发生变化。</p>
+                    <div class="learning-table-wrap"><table class="learning-table"><thead><tr><th scope="col">变量 / 含义</th><th scope="col">执行前</th><th scope="col">执行后</th></tr></thead><tbody id="notebook-values"></tbody></table></div>
+                    <details open><summary>每个格子的 g、f 和 parent 记录（可收起）</summary><div class="learning-table-wrap"><table class="learning-table"><thead><tr><th scope="col">Python 坐标</th><th scope="col">g：前 → 后</th><th scope="col">f：前 → 后</th><th scope="col">parent：前 → 后</th></tr></thead><tbody id="notebook-records"></tbody></table></div></details>
+                    <div id="notebook-trace" class="learning-code" aria-label="回溯函数当前语句">找到终点后，这里逐行展开 trace 的查表与反转过程。</div>
+                </section>
+                <section class="panel learning-panel" aria-labelledby="python-title">
+                    <h3 id="python-title">把完整 Python 带走，自己跑一次</h3>
+                    <p>网页使用 JavaScript 演示同一算法，下面是可独立运行的 Python 3.7+ 源码，包含所有辅助函数。使用同样的邻居顺序和同分规则，示例地图与上方 15 格例题一致，结果为 8 步。</p>
+                    <div class="learning-actions"><a href="astar.py" download="astar.py">下载 astar.py</a><button id="python-copy">复制完整 Python</button></div><p id="python-copy-status" role="status"></p>
+                    <p>保存后，在文件所在目录运行 <code>python astar.py</code>。地图是二维列表，0 表示空地，1 表示墙。</p>
+                    <details><summary>展开辅助函数：距离估计、初始化、找邻居、回溯</summary><div id="python-helpers"></div></details>
+                    <details><summary>查看完整源码（含函数与参数注释）</summary><pre id="python-source" class="learning-code learning-source" tabindex="0"></pre></details>
+                </section>
+            </section>
+            <section id="trace-practice" class="panel learning-panel" aria-labelledby="trace-title">
+                <span class="eyebrow">04 / FOLLOW THE PARENTS</span>
+                <h2 id="trace-title">从终点倒着查，为什么能找到整条路？</h2>
+                <p>这是独立的 4 格回溯练习。起点 → B → C → 终点；搜索时只留下了三条来路记录。每次选出当前格的 parent，把它加入列表，最后亲手反转。</p>
+                <pre class="learning-code">parent = {"终点": "C", "C": "B", "B": "起点"}</pre>
+                <pre id="trace-code" class="learning-code"></pre>
+                <p id="trace-question"></p><div id="trace-answers" class="learning-actions" role="group" aria-label="选择前一个格子"></div>
+                <div id="trace-list" class="learning-trace" aria-label="当前路径列表"></div>
+                <p id="trace-feedback" class="learning-feedback" role="status"></p>
+                <div class="learning-actions"><button id="trace-restart">↺ 重新查来路</button><button id="trace-reverse" class="primary" disabled>执行 path.reverse()</button></div>
             </section>
             <section id="race" aria-labelledby="race-title">
                 <div class="section-head">
                     <div>
-                        <span class="eyebrow">03 / DOCTOR RACE</span>
+                        <span class="eyebrow">05 / DOCTOR RACE</span>
                         <h2 id="race-title">同一张地图，两位博士，谁先到？</h2>
                     </div>
                     <span class="read-time">A* × Dijkstra</span>
@@ -280,7 +332,7 @@
             <footer>
                 <b>✳ 寻路小队</b>
                 <span>把抽象算法，变成看得见的小冒险。</span>
-                <small>第二版 · 四方向 / 等权重 / 曼哈顿距离</small>
+                <small>第四版 · 读代码 / 预测 / 执行 / 核对</small>
             </footer>
         </main>
         <dialog id="helpDialog">
@@ -293,6 +345,8 @@
         </dialog>
         <script src="astar.js"></script>
         <script src="app.js"></script>
+        <script src="python-source.js"></script>
+        <script src="learning.js"></script>
         <script src="walkthrough.js"></script>
         <script src="race-engine.js"></script>
         <script src="race.js"></script>

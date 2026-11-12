@@ -168,7 +168,7 @@ function buildEvents({ origin, target, barriers, width, height }) {
             + '平局时优先 h 较小的，再按加入顺序。');
 
         const reachedTarget = currentCell === target;
-        recordStep(6, '检查：到补给站了吗？', reachedTarget
+        recordStep(6, '检查：到撤离点了吗？', reachedTarget
             ? '到达目标！现在沿父节点回溯路线。'
             : '还没到终点，接下来从这格向四周探索。');
 
@@ -256,7 +256,7 @@ function buildEvents({ origin, target, barriers, width, height }) {
 
     currentCell = null;
     focusedCell = null;
-    recordStep(18, '没有路可以到达补给站',
+    recordStep(18, '没有路可以到达撤离点',
         '待探索集合已经为空，仍未到达终点。这张地图没有可通行路线。点击 ↺ 后试着拆掉几块障碍。');
     return events;
 }

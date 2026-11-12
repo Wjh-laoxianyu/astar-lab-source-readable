@@ -82,7 +82,7 @@ function initWalkthrough() {
             : `第 ${index + 1} / ${rounds.length} 轮 · 对应代码第 5 行`;
         candidateList.replaceChildren();
         if (done) {
-            $('#walk-title').textContent = `补给站找到了，最短路线 ${finish.path.length - 1} 步`;
+            $('#walk-title').textContent = `撤离点找到了，最短路线 ${finish.path.length - 1} 步`;
             $('#walk-description').textContent = finish.path.map(node => labels[node]).join(' → ');
             feedback.textContent = '起点的 h 只估了 4 步。实际要绕开墙，最后走了 8 步。每个格子记住自己的来路，沿着它们倒推就得到地图上的黄色路线。';
             action.textContent = '从头再试';

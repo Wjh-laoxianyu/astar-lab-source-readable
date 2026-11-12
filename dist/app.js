@@ -300,7 +300,7 @@ function renderLab() {
 
     $('#stepTitle').textContent = step.title || '先认识这张地图';
     $('#narration').textContent = step.text
-        || '从 ⚑ 出发，去 ◆ 补给站。你可以先修改地图，再点击「下一步」，看看算法如何思考。';
+        || '从 ⚑ 出发，去 ◆ 撤离点。你可以先修改地图，再点击「下一步」，看看算法如何思考。';
     $('#lineBadge').textContent = step.line ? `已执行 · 第 ${step.line} 行` : '等待执行';
     $('#visited').textContent = step.closed.length;
     $('#distance').textContent = step.traceCode === 'path.reverse()' ? step.path.length - 1 : '—';

@@ -3,50 +3,54 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>寻路小队 · A* 互动实验室</title>
-        <meta name="description" content="和阿米娅一起，用地图、代码与互动练习理解 A* 寻路算法。">
+        <title>罗德岛 · 战术路径推演终端</title>
+        <meta name="description" content="明日方舟同人教学终端：在原创撤离训练情境中，通过地图、代码与双方案推演理解 A* 寻路算法。">
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="walkthrough.css">
         <link rel="stylesheet" href="race.css">
         <link rel="stylesheet" href="learning.css">
+        <link rel="stylesheet" href="terminal.css">
     </head>
     <body>
         <!-- 页首与导航 -->
         <header>
-            <a class="brand" href="#">✳ <span>寻路小队<small>PATHFINDING CLUB</small></span></a>
-            <nav>
-                <a href="#intro">A* 是什么</a>
-                <a href="#learn">先做迷你例题</a>
-                <a href="#practice">亲手执行代码</a>
-                <a href="#race">博士竞速</a>
+            <a class="brand" href="#" aria-label="罗德岛战术终端首页"><span class="brand-mark" aria-hidden="true">RI</span><span>罗德岛<small>TACTICAL TERMINAL</small></span></a>
+            <nav aria-label="训练模块">
+                <a href="#intro">行动说明</a>
+                <a href="#learn">基础推演</a>
+                <a href="#lab">战术沙盘</a>
+                <a href="#race">双方案推演</a>
             </nav>
-            <span class="edition">学习任务 / 001</span>
+            <span class="edition"><i aria-hidden="true"></i> 本地模拟 / ONLINE</span>
         </header>
         <main>
             <section class="hero">
                 <div>
-                    <div class="eyebrow">RHODES ISLAND · ALGORITHM FIELD NOTES</div>
-                    <h1>下一步，<em>往哪里走？</em></h1>
-                    <p>跟着阿米娅，把 A* 的每一次选择看明白。<br>一张地图，一段代码，一场你能亲手参与的寻路行动。</p>
+                    <div class="eyebrow">RHODES ISLAND / TACTICAL SIMULATION</div>
+                    <div class="mission-label">行动档案 001 <span>撤离路线规划</span></div>
+                    <h1>通路受阻。<br><em>重新规划路线。</em></h1>
+                    <p>博士，请在封锁区域中建立通往撤离点的路径。<br>跟随阿米娅，用 A* 推演每一次选择，让行动有迹可循。</p>
+                    <div class="hero-actions"><a class="primary" href="#lab">进入战术沙盘 <span aria-hidden="true">↗</span></a><a href="#learn">从基础推演开始 →</a></div>
                     <div class="tags">
-                        <span>零基础友好</span>
-                        <span>地图 × 代码同步</span>
-                        <span>可自由编辑</span>
+                        <span>01 / 阅读简报</span>
+                        <span>02 / 执行推演</span>
+                        <span>03 / 核对路线</span>
                     </div>
                 </div>
                 <div class="hero-art">
-                    <div class="orbit"></div>
-                    <span class="coord">MISSION 01<br>寻找补给站</span>
+                    <div class="orbit" aria-hidden="true"></div>
+                    <span class="coord">COMMS / 01<br><strong>AMIYA</strong><br>战术支援 · 阿米娅</span>
                     <img src="assets/amiya.png" alt="拿着导航罗盘的 Q 版阿米娅" class="amiya">
-                    <div class="bubble">博士，我们一起找条近路吧！</div>
-                    <span class="fan">明日方舟同人学习演示 · AI 生成插画</span>
+                    <div class="bubble"><small>通讯记录 / CONNECTED</small>博士，路线推演准备就绪。<br>请确认下一个行动节点。</div>
+                    <span class="fan">同人教学演示 / 原创训练情境 / AI 生成插画</span>
                 </div>
             </section>
+            <div class="mission-strip" aria-label="训练简报"><div><span>OPERATION / 001</span><b>封锁区撤离训练</b></div><div><span>OBJECTIVE</span><b>建立最短通行路线</b></div><div><span>PROTOCOL</span><b>四向移动 / 每步代价 1</b></div><div><span>ENGINE</span><b>A* / f = g + h</b></div></div>
             <section id="intro" class="algorithm-intro" aria-labelledby="intro-title">
                 <div class="section-head">
                     <div>
-                        <span class="eyebrow">00 / START HERE</span>
-                        <h2 id="intro-title">A* 是什么？像导航一样，一步步找路</h2>
+                        <span class="eyebrow">00 / OPERATION BRIEF</span>
+                        <h2 id="intro-title">行动说明 / 理解 A* 的路径决策</h2>
                     </div>
                     <span class="read-time">零基础 · 约 2 分钟</span>
                 </div>
@@ -86,12 +90,12 @@
             <section id="learn" class="walkthrough" aria-labelledby="learn-title">
                 <div class="section-head">
                     <div>
-                        <span class="eyebrow">01 / GUIDED WALKTHROUGH</span>
-                        <h2 id="learn-title">先用 15 个格子，做一次 A* 的选择</h2>
+                        <span class="eyebrow">01 / BASIC SIMULATION</span>
+                        <h2 id="learn-title">基础推演 / 在 15 格区域内规划路线</h2>
                     </div>
                     <span class="read-time">零基础 · 约 3 分钟</span>
                 </div>
-                <p class="walk-intro">阿米娅要从起点去补给站。每次只能上下左右走一格，灰色格子是墙。<strong>A* 会把发现的路口记在一张候选表上，每轮挑预计总步数最少的一个，看看从那里还能往哪走。</strong></p>
+                <p class="walk-intro">阿米娅要从起点去撤离点。每次只能上下左右走一格，灰色格子是墙。<strong>A* 会把发现的路口记在一张候选表上，每轮挑预计总步数最少的一个，看看从那里还能往哪走。</strong></p>
                 <div class="walk-terms">
                     <div>
                         <b>g</b>
@@ -111,7 +115,7 @@
                 </div>
                 <div class="walk-demo panel">
                     <div class="walk-map">
-                        <h3>补给站就在墙后</h3>
+                        <h3>撤离点就在墙后</h3>
                         <div id="walk-grid" aria-label="5 列 3 行教学地图"></div>
                         <div class="legend">
                             <span><i class="open"></i>候选</span>
@@ -139,8 +143,8 @@
                 <p class="walk-transfer"><strong>接下来替电脑执行代码</strong>：先算一步代价，再判断要不要更新记录。<a href="#practice">开始代码练习 ↓</a></p>
             </section>
             <section id="practice" class="panel learning-panel" aria-labelledby="practice-title">
-                <span class="eyebrow">02 / YOU ARE THE COMPUTER</span>
-                <h2 id="practice-title">替电脑执行一次：新走法值得记下来吗？</h2>
+                <span class="eyebrow">02 / COMMAND TRAINING</span>
+                <h2 id="practice-title">指令演练 / 新路线是否值得记录？</h2>
                 <p>这是单独练习一次邻居检查的小场景，不改变下方实验室地图。当前格是 A，邻居是 B：到 A 已走 2 步，从 A 到 B 再走 1 步。先预测，答对后才执行。</p>
                 <label>练习情境 <select id="practice-case"><option value="better">发现更短路线：B 的旧记录是 5</option><option value="worse">保留旧路线：B 的旧记录是 1</option><option value="first">第一次发现 B：还没有记录</option></select></label>
                 <div class="learning-columns">
@@ -153,7 +157,7 @@
                         <div class="learning-actions"><button id="practice-restart">↺ 重做本题</button><button id="practice-next" class="primary" disabled>执行下一行 →</button></div>
                     </div>
                     <div class="learning-prompt">
-                        <h3>阿米娅的记录本</h3>
+                        <h3>行动记录 / 阿米娅</h3>
                         <p>箭头 A → B 表示这次尝试的走法。只有更短时，才改写 B 的记录。</p>
                         <pre id="practice-state" class="learning-code"></pre>
                         <p>注意：<code>new_g</code> 是试算结果；<code>g[B]</code> 是已经保存的记录。算出新值，不等于立刻覆盖旧值。</p>
@@ -164,8 +168,8 @@
             <section id="lab">
                 <div class="section-head">
                     <div>
-                        <span class="eyebrow">03 / INTERACTIVE LAB</span>
-                        <h2>把原理放进完整地图</h2>
+                        <span class="eyebrow">03 / TACTICAL SANDBOX</span>
+                        <h2>战术沙盘 / 规划你的行动路线</h2>
                     </div>
                     <button id="help">操作说明 ⓘ</button>
                 </div>
@@ -212,7 +216,7 @@
                     </section>
                     <section class="code-panel panel">
                         <div class="panel-top">
-                            <h3>代码在这里发生</h3>
+                            <h3>指令监视器</h3>
                             <span class="file-label">Python · 教学版</span>
                         </div>
                         <div id="code"></div>
@@ -223,7 +227,7 @@
                         <div class="guide panel">
                             <span class="eyebrow">阿米娅的行动笔记</span>
                             <h3 id="stepTitle">先认识这张地图</h3>
-                            <p id="narration" aria-live="polite">从 ⚑ 出发，去 ◆ 补给站。你可以先修改地图，再点击「下一步」，看看算法如何思考。</p>
+                            <p id="narration" aria-live="polite">从 ⚑ 出发，去 ◆ 撤离点。你可以先修改地图，再点击「下一步」，看看算法如何思考。</p>
                             <div id="lineBadge">等待执行</div>
                         </div>
                         <div class="score panel">
@@ -247,7 +251,7 @@
                     </aside>
                 </div>
                 <section class="panel learning-panel" aria-labelledby="notebook-title">
-                    <h3 id="notebook-title">程序的记事本 · 这一行改了什么？</h3>
+                    <h3 id="notebook-title">执行日志 / 这一行改了什么？</h3>
                     <p id="notebook-status" role="status">点击实验室的「下一步」开始。</p>
                     <p>这里统一显示 Python 坐标 <b>(行, 列)，从 0 开始</b>。例如地图标注 (2, 5) 是第 2 列、第 5 行，对应 Python 的 (4, 1)。黄色单元格表示本行发生变化。</p>
                     <div class="learning-table-wrap"><table class="learning-table"><thead><tr><th scope="col">变量 / 含义</th><th scope="col">执行前</th><th scope="col">执行后</th></tr></thead><tbody id="notebook-values"></tbody></table></div>
@@ -264,8 +268,8 @@
                 </section>
             </section>
             <section id="trace-practice" class="panel learning-panel" aria-labelledby="trace-title">
-                <span class="eyebrow">04 / FOLLOW THE PARENTS</span>
-                <h2 id="trace-title">从终点倒着查，为什么能找到整条路？</h2>
+                <span class="eyebrow">04 / ROUTE RECONSTRUCTION</span>
+                <h2 id="trace-title">行动复盘 / 从终点还原整条路线</h2>
                 <p>这是独立的 4 格回溯练习。起点 → B → C → 终点；搜索时只留下了三条来路记录。每次选出当前格的 parent，把它加入列表，最后亲手反转。</p>
                 <pre class="learning-code">parent = {"终点": "C", "C": "B", "B": "起点"}</pre>
                 <pre id="trace-code" class="learning-code"></pre>
@@ -277,8 +281,8 @@
             <section id="race" aria-labelledby="race-title">
                 <div class="section-head">
                     <div>
-                        <span class="eyebrow">05 / DOCTOR RACE</span>
-                        <h2 id="race-title">同一张地图，两位博士，谁先到？</h2>
+                        <span class="eyebrow">05 / PARALLEL SIMULATION</span>
+                        <h2 id="race-title">双方案推演 / A* 与 Dijkstra</h2>
                     </div>
                     <span class="read-time">A* × Dijkstra</span>
                 </div>
@@ -286,17 +290,17 @@
                 <div class="race-layout">
                     <div class="panel race-map-panel">
                         <div class="panel-top">
-                            <h3>共用赛场 <small>12 × 9 · 四方向等权重</small></h3>
+                            <h3>共用推演区域 <small>12 × 9 · 四方向等权重</small></h3>
                             <button id="race-import" type="button">使用实验室当前地图</button>
                         </div>
                         <div class="race-tools">
-                            <label>编辑 <select id="race-tool" aria-label="竞速地图编辑工具"><option value="wall">障碍 / 清除</option><option value="start">起点</option><option value="goal">终点</option></select></label>
-                            <label>地图 <select id="race-scene" aria-label="竞速地图场景"><option value="intro">绕过围墙</option><option value="maze">折返迷宫</option><option value="empty">空白地图</option><option value="blocked">无路可走</option><option value="custom" disabled>自定义地图</option></select></label>
+                            <label>编辑 <select id="race-tool" aria-label="推演地图编辑工具"><option value="wall">障碍 / 清除</option><option value="start">起点</option><option value="goal">终点</option></select></label>
+                            <label>地图 <select id="race-scene" aria-label="推演地图场景"><option value="intro">绕过围墙</option><option value="maze">折返迷宫</option><option value="empty">空白地图</option><option value="blocked">无路可走</option><option value="custom" disabled>自定义地图</option></select></label>
                             <span>重置后可点击格子编辑</span>
                         </div>
                         <div class="race-board-wrap">
                             <div id="race-board">
-                                <div id="race-grid" role="group" aria-label="两种算法共用的竞速地图"></div>
+                                <div id="race-grid" role="group" aria-label="两种算法共用的推演地图"></div>
                                 <svg id="race-paths" viewBox="0 0 12 9" preserveAspectRatio="none" aria-hidden="true"><polyline class="race-route race-route-a"></polyline><polyline class="race-route race-route-d"></polyline></svg>
                                 <div id="race-doctor-a" class="race-doctor race-team-a" aria-hidden="true"><img src="assets/doctor-run.png" alt=""><span>A*</span></div>
                                 <div id="race-doctor-d" class="race-doctor race-team-d" aria-hidden="true"><img src="assets/doctor-run.png" alt=""><span>D</span></div>
@@ -306,42 +310,42 @@
                         <p id="race-map-hint" class="hint">点击格子切换障碍；两队始终使用相同的地图、起点与终点。</p>
                         <div class="transport race-transport">
                             <button id="race-reset" type="button">↺ 重置</button>
-                            <button id="race-prev" type="button" aria-label="竞速上一回合">←</button>
-                            <button id="race-play" class="primary" type="button">▶ 开始竞速</button>
+                            <button id="race-prev" type="button" aria-label="推演上一回合">←</button>
+                            <button id="race-play" class="primary" type="button">▶ 开始推演</button>
                             <button id="race-next" type="button">下一回合</button>
-                            <label>速度 <select id="race-speed" aria-label="竞速播放速度"><option value="800">慢速</option><option value="300" selected>标准</option><option value="80">快速</option></select></label>
+                            <label>速度 <select id="race-speed" aria-label="推演播放速度"><option value="800">慢速</option><option value="300" selected>标准</option><option value="80">快速</option></select></label>
                         </div>
-                        <div class="timeline"><input id="race-timeline" type="range" min="0" max="0" value="0" aria-label="竞速回合进度"><span id="race-progress">准备就绪</span></div>
+                        <div class="timeline"><input id="race-timeline" type="range" min="0" max="0" value="0" aria-label="推演回合进度"><span id="race-progress">准备就绪</span></div>
                     </div>
                     <aside class="race-sidebar">
                         <article class="panel race-card race-team-a">
-                            <div class="race-card-head"><img src="assets/doctor-run.png" alt="明日方舟博士 Q 版跑步形象"><div><span class="eyebrow">BLUE / 蓝队博士</span><h3>A* <small>目标引导</small></h3><code>f = g + h</code></div></div>
+                            <div class="race-card-head"><img src="assets/doctor-run.png" alt="明日方舟博士 Q 版跑步形象"><div><span class="eyebrow">PLAN A / 目标引导</span><h3>A* <small>目标引导</small></h3><code>f = g + h</code></div></div>
                             <p id="race-status-a">等待发令</p>
                             <dl><div><dt>搜索格数</dt><dd id="race-count-a">0</dd></div><div><dt>路径步数</dt><dd id="race-length-a">—</dd></div><div><dt>到达回合</dt><dd id="race-arrival-a">—</dd></div></dl>
                         </article>
                         <article class="panel race-card race-team-d">
-                            <div class="race-card-head"><img src="assets/doctor-run.png" alt=""><div><span class="eyebrow">ORANGE / 橙队博士</span><h3>Dijkstra <small>由近及远</small></h3><code>f = g（h = 0）</code></div></div>
+                            <div class="race-card-head"><img src="assets/doctor-run.png" alt=""><div><span class="eyebrow">PLAN B / 广度推进</span><h3>Dijkstra <small>由近及远</small></h3><code>f = g（h = 0）</code></div></div>
                             <p id="race-status-d">等待发令</p>
                             <dl><div><dt>搜索格数</dt><dd id="race-count-d">0</dd></div><div><dt>路径步数</dt><dd id="race-length-d">—</dd></div><div><dt>到达回合</dt><dd id="race-arrival-d">—</dd></div></dl>
                         </article>
                         <div class="race-verdict" role="status" aria-live="polite"><b id="race-result">博士，就位！</b><p id="race-explanation">先找路，再出发。看看启发式估计能省下多少次搜索。</p></div>
-                        <p class="race-footnote">竞速回合 = 搜索回合 + 行走步数，不代表程序实际耗时。搜索格数含选出的终点。两队都求最短路，A* 不保证每张地图都领先。博士为 AI 生成的明日方舟同人形象。</p>
+                        <p class="race-footnote">推演回合 = 搜索回合 + 行走步数，不代表程序实际耗时。搜索格数含选出的终点。两队都求最短路，A* 不保证每张地图都领先。博士为 AI 生成的明日方舟同人形象。</p>
                     </aside>
                 </div>
             </section>
             <footer>
-                <b>✳ 寻路小队</b>
-                <span>把抽象算法，变成看得见的小冒险。</span>
-                <small>第四版 · 读代码 / 预测 / 执行 / 核对</small>
+                <b>RHODES ISLAND / TRAINING</b>
+                <span>明日方舟同人教学 · 原创撤离训练情境</span>
+                <small>SIMULATION ONLY / 非官方作品</small>
             </footer>
         </main>
         <dialog id="helpDialog">
-            <h2>欢迎来到寻路实验室</h2>
+            <h2>战术终端 / 操作说明</h2>
             <p>① 用「障碍 / 橡皮 / 起点 / 终点」编辑地图。触屏可逐格点击。</p>
             <p>② 点「下一步」逐行观察，或「开始演示」自动播放。支持暂停、上一步及进度回放。</p>
             <p>③ 演示期间点击格子查看 g / h / f。要修改地图，先点击 ↺ 重置。</p>
             <p>④ 蓝色待探索格出现后，点「猜猜下一格」，再点击你认为下一次会被选中的蓝色格子。</p>
-            <button id="closeHelp" class="primary">明白了，出发！</button>
+            <button id="closeHelp" class="primary">确认，进入推演</button>
         </dialog>
         <script src="astar.js"></script>
         <script src="app.js"></script>

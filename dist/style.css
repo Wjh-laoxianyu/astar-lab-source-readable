@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap');
 
 :root {
-    --bg: #f5f6f0;
-    --ink: #263c3c;
-    --muted: #71817c;
-    --teal: #167e72;
-    --line: #dce4db;
-    --mint: #e4f0e8;
+    --bg: #edf0f3;
+    --ink: #172b3a;
+    --muted: #465969;
+    --teal: #155b88;
+    --line: #899aa8;
+    --mint: #e2eaf0;
 }
 
 * {
@@ -35,9 +35,9 @@ button,select {
 
 button {
     border: 1px solid var(--line);
-    background: #fff;
+    background: #ffffff;
     color: var(--ink);
-    border-radius: 7px;
+    border-radius: 2px;
     padding: 9px 13px;
     transition: .15s;
 }
@@ -48,7 +48,7 @@ button:hover {
 }
 
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible {
-    outline: 3px solid #e6ac42;
+    outline: 3px solid #98400f;
     outline-offset: 2px;
 }
 
@@ -106,7 +106,7 @@ nav {
     color: var(--muted);
     border: 1px solid var(--line);
     padding: 7px 12px;
-    border-radius: 20px;
+    border-radius: 2px;
 }
 
 main {
@@ -158,7 +158,7 @@ h1 em {
     font-size: 10px;
     padding: 5px 10px;
     background: #e9ede4;
-    border-radius: 4px;
+    border-radius: 2px;
     color: #687a68;
 }
 
@@ -176,7 +176,7 @@ h1 em {
     height: 260px;
     background: #e2ece1;
     border-radius: 50%;
-    border: 16px solid #edf0e7;
+    border: 16px solid #e2eaf0;
 }
 
 .amiya {
@@ -203,7 +203,7 @@ h1 em {
     right: -6px;
     top: 44px;
     z-index: 2;
-    background: white;
+    background: #ffffff;
     padding: 13px 17px;
     border-radius: 14px 14px 14px 0;
     font-size: 12px;
@@ -246,9 +246,9 @@ h1 em {
 
 .panel {
     border: 1px solid var(--line);
-    border-radius: 12px;
+    border-radius: 2px;
     overflow: hidden;
-    background: #fff;
+    background: #ffffff;
 }
 
 .panel-top {
@@ -274,9 +274,9 @@ h3 {
 
 select {
     padding: 6px;
-    border-radius: 5px;
+    border-radius: 2px;
     border: 1px solid var(--line);
-    background: white;
+    background: #ffffff;
     font-size: 10px;
     color: var(--ink);
 }
@@ -290,7 +290,7 @@ select {
 .tools button {
     font-size: 11px;
     padding: 6px 9px;
-    background: #f6f8f4;
+    background: #edf2f6;
 }
 
 .tools .selected {
@@ -312,17 +312,17 @@ select {
     display: grid;
     grid-template-columns: repeat(12,1fr);
     gap: 3px;
-    background: #edf0e9;
-    border: 7px solid #edf0e9;
-    border-radius: 9px;
+    background: #c7d1da;
+    border: 7px solid #c7d1da;
+    border-radius: 2px;
     touch-action: pan-y;
 }
 
 .cell {
     aspect-ratio: 1;
-    border: 1px solid #e1e7dd;
-    border-radius: 4px;
-    background: #fafbf7;
+    border: 1px solid #7e92a2;
+    border-radius: 2px;
+    background: #ffffff;
     padding: 0;
     position: relative;
     font: 10px monospace;
@@ -334,48 +334,48 @@ select {
 }
 
 .cell.wall {
-    background: #74847a;
-    border-color: #68786e;
+    background: #48535d;
+    border-color: #67737d;
     background-image: repeating-linear-gradient(45deg,transparent,transparent 5px,#ffffff0a 5px,#ffffff0a 7px);
 }
 
 .cell.open,.legend .open {
-    background: #d2e8f1;
-    color: #357088;
-    border-color: #b4d5e2;
+    background: #b6d8f0;
+    color: #153e5c;
+    border-color: #3b7399;
 }
 
 .cell.closed,.legend .closed {
-    background: #d8e9d6;
-    color: #607d54;
-    border-color: #c0d7ba;
+    background: #d4dce3;
+    color: #263e50;
+    border-color: #788e9f;
 }
 
 .cell.current,.legend .current {
-    background: #168878;
+    background: #155b88;
     color: white;
-    border-color: #126e61;
+    border-color: #103f60;
     box-shadow: 0 0 0 2px #16887844;
     z-index: 1;
 }
 
 .cell.path,.legend .path {
-    background: #f6d887;
-    color: #7c5921;
-    border-color: #e9c15c;
+    background: #e2bb63;
+    color: #242018;
+    border-color: #987019;
 }
 
 .cell.start {
-    color: #fff;
-    background: #187e71;
-    border-color: #187e71;
+    color: #ffffff;
+    background: #155b88;
+    border-color: #155b88;
     font-size: 19px;
 }
 
 .cell.goal {
-    color: #9c712b;
-    background: #ffe8ae;
-    border-color: #efcb78;
+    color: #242018;
+    background: #e2bb63;
+    border-color: #987019;
     font-size: 19px;
 }
 
@@ -384,7 +384,7 @@ select {
 }
 
 .cell.selected-cell {
-    outline: 2px solid #cf8e32;
+    outline: 2px solid #98400f;
     outline-offset: -2px;
 }
 
@@ -450,7 +450,7 @@ select {
 }
 
 .primary:hover {
-    background: #10695f;
+    background: #10476d;
     color: white;
 }
 
@@ -486,18 +486,18 @@ select {
 
 /* 教学代码与行高亮 */
 .code-panel {
-    background: #233637;
-    color: #ceded5;
-    border-color: #233637;
+    background: #f8fafc;
+    color: #172b3a;
+    border-color: #f8fafc;
 }
 
 .code-panel .panel-top {
-    border-color: #3b4e4d;
+    border-color: #899aa8;
 }
 
 .file-label {
     font-size: 9px;
-    color: #92b5a6;
+    color: #465969;
 }
 
 #code {
@@ -516,13 +516,13 @@ select {
 }
 
 .code-line.active {
-    background: #35564f;
-    border-left-color: #bce8a2;
-    color: #ecffcf;
+    background: #c5def0;
+    border-left-color: #155b88;
+    color: #123f60;
 }
 
 .ln {
-    color: #78938a;
+    color: #4f6576;
     width: 33px;
     flex-shrink: 0;
     text-align: right;
@@ -531,11 +531,11 @@ select {
 }
 
 .code-note {
-    border-top: 1px solid #3b4e4d;
+    border-top: 1px solid #899aa8;
     padding: 12px 18px;
     font-size: 9px;
     line-height: 1.8;
-    color: #99ada4;
+    color: #465969;
 }
 
 .insight {
@@ -545,7 +545,7 @@ select {
 
 .guide {
     padding: 19px;
-    background: #e7eee1;
+    background: #e2eaf0;
     min-height: 177px;
 }
 
@@ -563,7 +563,7 @@ select {
     font-size: 12px;
     line-height: 1.9;
     margin: 0;
-    color: #62745c;
+    color: #344e62;
 }
 
 #lineBadge {
@@ -591,11 +591,11 @@ select {
 }
 
 .formula span {
-    color: #bd9546;
+    color: #e2bb63;
 }
 
 .formula em {
-    color: #729dba;
+    color: #155b88;
 }
 
 .score>p {
@@ -615,8 +615,8 @@ select {
 .stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    background: #edf0e7;
-    border-radius: 9px;
+    background: #e2eaf0;
+    border-radius: 2px;
     padding: 15px;
 }
 
@@ -625,7 +625,7 @@ select {
 }
 
 .stats div+div {
-    border-left: 1px solid #d5dfcf;
+    border-left: 1px solid #899aa8;
 }
 
 .stats b {
@@ -640,7 +640,7 @@ select {
 
 .quiz {
     background: transparent;
-    border: 1px dashed #7c9b6c;
+    border: 1px dashed #567b95;
     color: var(--teal);
     font-size: 11px;
 }
@@ -676,7 +676,7 @@ select {
 
 .num {
     font: italic 30px Georgia;
-    color: #a4b798;
+    color: #566f83;
 }
 
 .learn-grid h3 {
@@ -691,7 +691,7 @@ select {
 }
 
 .learn-grid b {
-    color: #49604f;
+    color: #344e62;
     font-weight: 500;
 }
 
@@ -699,8 +699,8 @@ select {
     display: flex;
     align-items: center;
     gap: 28px;
-    background: #e7ede0;
-    border-radius: 12px;
+    background: #e2eaf0;
+    border-radius: 2px;
     padding: 24px 28px;
 }
 
@@ -766,7 +766,7 @@ footer small {
 dialog {
     max-width: 520px;
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: 2px;
     padding: 30px;
     color: var(--ink);
 }

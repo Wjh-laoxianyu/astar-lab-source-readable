@@ -1,4 +1,4 @@
-/* 竞速界面使用独立地图快照；导入实验室地图后，两队共享这份快照。 */
+/* 推演界面使用独立地图快照；导入实验室地图后，两队共享这份快照。 */
 (function () {
     'use strict';
     const find = id => document.getElementById(`race-${id}`);
@@ -147,7 +147,7 @@
             return;
         }
         if (round === frames.length - 1) round = 0;
-        // 单步教学和竞速不会在后台同时播放。
+        // 单步教学和推演不会在后台同时播放。
         pausePlayback();
         startTimer();
         advance();
@@ -201,7 +201,7 @@
             if (round > 0) {
                 if (team.phase === 'searching') status = `规划路线中 · 已搜索 ${team.closed.length} 格`;
                 else if (team.phase === 'unreachable') status = '无路可走 · 已搜索完所有可达格子';
-                else if (team.phase === 'arrived') status = `抵达补给站 · 第 ${team.arrivedAt} 回合`;
+                else if (team.phase === 'arrived') status = `抵达撤离点 · 第 ${team.arrivedAt} 回合`;
                 else status = `第 ${team.foundAt} 回合找到路线 · 已跑 ${team.walked} / ${team.route.length - 1} 步`;
             }
             find(`status-${key}`).textContent = status;
@@ -222,13 +222,13 @@
                 title = '终点不可达，两队都未完赛';
                 explanation = '所有可达格子都已检查。重置后移除障碍，或者换一张地图再试。';
             } else {
-                title = running ? '竞速进行中' : '回合已暂停';
+                title = running ? '推演进行中' : '回合已暂停';
                 explanation = '边框标出当前搜索格；博士先在起点规划，找到路线后才沿路线移动。';
             }
         }
         find('result').textContent = title;
         find('explanation').textContent = explanation;
-        find('play').textContent = running ? 'Ⅱ 暂停竞速' : finished ? '↺ 再赛一次' : round ? '▶ 继续竞速' : '▶ 开始竞速';
+        find('play').textContent = running ? 'Ⅱ 暂停推演' : finished ? '↺ 重新推演' : round ? '▶ 继续推演' : '▶ 开始推演';
         find('prev').disabled = round === 0;
         find('next').disabled = finished;
         find('tool').disabled = locked;
